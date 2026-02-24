@@ -12,3 +12,61 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum AccountStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+enum AuthorizationStatus {
+  PENDING
+  RETURNED
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id             Int             @id @default(autoincrement())
+  email          String          @unique
+  name           String
+  password       String
+  authorizations Authorization[]
+  role           Role            @default(USER)
+  accountStatus  AccountStatus   @default(ACTIVE)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+model Authorization {
+  id                  Int                 @id @default(autoincrement())
+  origin              String
+  destination         String
+  motive              String
+  responsible         String
+  authorizationStatus AuthorizationStatus @default(PENDING)
+  user                User                @relation(fields: [userId], references: [id])
+  userId              Int
+  items               AuthorizationItem[]
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+  returnedAt          DateTime?
+
+  @@index([userId])
+  @@index([authorizationStatus])
+  @@index([createdAt])
+}
+
+model AuthorizationItem {
+  id              Int           @id @default(autoincrement())
+  assetNumber     Int
+  itemDescription String
+  amount          Int
+  authorization   Authorization @relation(fields: [authorizationId], references: [id])
+  authorizationId Int
+}
