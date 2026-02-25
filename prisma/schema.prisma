@@ -64,7 +64,7 @@ model Authorization {
 
 model AuthorizationItem {
   id              Int           @id @default(autoincrement())
-  assetNumber     Int
+  assetNumber     String
   itemDescription String
   amount          Int
   authorization   Authorization @relation(fields: [authorizationId], references: [id])
