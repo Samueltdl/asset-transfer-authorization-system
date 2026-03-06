@@ -1,9 +1,12 @@
-import { Button } from "@/components/ui/button";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
-export default function Home() {
-  return (
-    <div>
-      <Button>Cadastrar</Button>
-    </div>
-  );
+export default async function RootPage() {
+  const session = await auth();
+
+  if (!session) {
+    redirect("/login");
+  }
+
+  redirect("/dashboard");
 }
