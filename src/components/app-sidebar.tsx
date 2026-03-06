@@ -1,20 +1,89 @@
 import {
+  LayoutDashboard,
+  PlusCircle,
+  History,
+  LogOut,
+  ShieldCheck,
+} from "lucide-react";
+
+import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarGroup,
   SidebarHeader,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarGroupContent,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { signOut } from "@/auth";
+
+const menuItems = [
+  {
+    title: "Painel Geral",
+    url: "/dashboard",
+    icon: LayoutDashboard,
+  },
+  {
+    title: "Histórico / Gestão",
+    url: "/dashboard/autorizacoes",
+    icon: History,
+  },
+  {
+    title: "Nova Autorização",
+    url: "/dashboard/autorizacoes/novo", // Aqui provavelmente vai ser alterado para abrir um modal ou algo do tipo
+    icon: PlusCircle,
+  },
+];
 
 export function AppSidebar() {
   return (
-    <Sidebar>
-      <SidebarHeader />
+    <Sidebar variant="sidebar" collapsible="icon">
+      <SidebarHeader className="border-b p-4">
+        <div className="flex items-center gap-2 font-semibold text-primary">
+          <ShieldCheck className="h-6 w-6" />
+          <span className="truncate">Autorizações de Saída</span>
+        </div>
+      </SidebarHeader>
+
       <SidebarContent>
-        <SidebarGroup />
-        <SidebarGroup />
+        <SidebarGroup>
+          <SidebarGroupLabel>Gestão de Ativos</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {menuItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild tooltip={item.title}>
+                    <a href={item.url}>
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </a>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter />
+
+      <SidebarFooter className="border-t p-4">
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              className="cursor-pointer"
+              onClick={async () => {
+                "use server";
+                await signOut({ redirectTo: "/login" });
+              }}
+            >
+              <LogOut />
+              <span>Sair do Sistema</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
   );
 }
