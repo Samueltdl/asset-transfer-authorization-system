@@ -28,12 +28,12 @@ const menuItems = [
   },
   {
     title: "Histórico / Gestão",
-    url: "/dashboard/autorizacoes",
+    url: "/dashboard/authorizations",
     icon: History,
   },
   {
     title: "Nova Autorização",
-    url: "/dashboard/autorizacoes/novo", // Aqui provavelmente vai ser alterado para abrir um modal ou algo do tipo
+    url: "/dashboard/authorizations/new", // Aqui provavelmente vai ser alterado para abrir um modal ou algo do tipo
     icon: PlusCircle,
   },
 ];
