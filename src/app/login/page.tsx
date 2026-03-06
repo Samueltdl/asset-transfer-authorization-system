@@ -1,67 +1,19 @@
-"use client";
+import { LoginForm } from "@/components/login-form";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-
-import { useActionState } from "react";
-import { authenticate } from "@/lib/actions";
-import { useSearchParams } from "next/navigation";
-
-export default function LoginForm() {
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
-  const [errorMessage, formAction, isPending] = useActionState(
-    authenticate,
-    undefined,
-  );
-
-  const form = useForm({
-    defaultValues: { email: "", password: "" },
-  });
-
+export default function LoginPage() {
   return (
-    <Form {...form}>
-      <form action={formAction} className="space-y-4">
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>E-mail</FormLabel>
-              <FormControl>
-                <Input placeholder="seu@email.com" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Senha</FormLabel>
-              <FormControl>
-                <Input type="password" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <input type="hidden" name="redirectTo" value={callbackUrl} />
-        <Button type="submit" className="w-full" aria-disabled={isPending}>
-          Entrar
-        </Button>
-      </form>
-    </Form>
+    <main className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
+      <Card className="w-full max-w-md shadow-lg">
+        <CardHeader className="text-center">
+          <CardTitle className="text-2xl font-bold">
+            Acesso ao Sistema
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <LoginForm />
+        </CardContent>
+      </Card>
+    </main>
   );
 }
