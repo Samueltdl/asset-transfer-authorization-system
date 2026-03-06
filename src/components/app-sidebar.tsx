@@ -1,3 +1,5 @@
+"use client";
+
 import {
   LayoutDashboard,
   PlusCircle,
@@ -18,7 +20,10 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { signOut } from "@/auth";
+import { Dialog, DialogTrigger } from "./ui/dialog";
+import { useState } from "react";
+import { CreateAuthorizationForm } from "./create-authorization-form";
+import { logout } from "@/lib/actions";
 
 const menuItems = [
   {
@@ -31,14 +36,11 @@ const menuItems = [
     url: "/dashboard/authorizations",
     icon: History,
   },
-  {
-    title: "Nova Autorização",
-    url: "/dashboard/authorizations/new", // Aqui provavelmente vai ser alterado para abrir um modal ou algo do tipo
-    icon: PlusCircle,
-  },
 ];
 
 export function AppSidebar() {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   return (
     <Sidebar variant="sidebar" collapsible="icon">
       <SidebarHeader className="border-b p-4">
@@ -63,6 +65,21 @@ export function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
+
+              <SidebarMenuItem>
+                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                  <DialogTrigger asChild>
+                    <SidebarMenuButton
+                      className="cursor-pointer"
+                      tooltip="Nova Autorização"
+                    >
+                      <PlusCircle />
+                      <span>Nova Autorização</span>
+                    </SidebarMenuButton>
+                  </DialogTrigger>
+                  <CreateAuthorizationForm />
+                </Dialog>
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -71,13 +88,7 @@ export function AppSidebar() {
       <SidebarFooter className="border-t p-4">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton
-              className="cursor-pointer"
-              onClick={async () => {
-                "use server";
-                await signOut({ redirectTo: "/login" });
-              }}
-            >
+            <SidebarMenuButton className="cursor-pointer" onClick={logout}>
               <LogOut />
               <span>Sair do Sistema</span>
             </SidebarMenuButton>
