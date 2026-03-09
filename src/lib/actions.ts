@@ -8,14 +8,16 @@ export async function authenticate(
   formData: FormData,
 ) {
   try {
-    await signIn("credentials", formData);
+    await signIn("credentials", Object.fromEntries(formData));
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
         case "CredentialsSignin":
-          return "Invalid credentials.";
+          return "E-mail ou senha incorretos.";
+        case "CallbackRouteError":
+          return "Erro na verificação das credenciais.";
         default:
-          return "Something went wrong.";
+          return "Ocorreu um erro ao tentar entrar.";
       }
     }
     throw error;
@@ -23,5 +25,9 @@ export async function authenticate(
 }
 
 export const logout = async () => {
-  await signOut({ redirectTo: "/login" });
+  try {
+    await signOut({ redirectTo: "/login" });
+  } catch (error) {
+    throw error;
+  }
 };
