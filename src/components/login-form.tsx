@@ -11,22 +11,29 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { toast } from "sonner";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { authenticate } from "@/lib/actions";
 import { useSearchParams } from "next/navigation";
 
 export function LoginForm() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
-  const [errorMessage, formAction, isPending] = useActionState(
-    authenticate,
-    undefined,
-  );
+  const [state, formAction, isPending] = useActionState(authenticate, {
+    message: "",
+    timestamp: 0,
+  });
 
   const form = useForm({
     defaultValues: { email: "", password: "" },
   });
+
+  useEffect(() => {
+    if (state?.message) {
+      toast.error(state.message);
+    }
+  }, [state]);
 
   return (
     <Form {...form}>

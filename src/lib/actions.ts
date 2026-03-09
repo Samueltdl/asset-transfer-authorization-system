@@ -3,21 +3,34 @@
 import { signIn, signOut } from "@/auth";
 import { AuthError } from "next-auth";
 
-export async function authenticate(
-  prevState: string | undefined,
-  formData: FormData,
-) {
+export type AuthState =
+  | {
+      message: string;
+      timestamp: number;
+    }
+  | undefined;
+
+export async function authenticate(prevState: AuthState, formData: FormData) {
   try {
     await signIn("credentials", Object.fromEntries(formData));
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
         case "CredentialsSignin":
-          return "E-mail ou senha incorretos.";
+          return {
+            message: "E-mail ou senha incorretos.",
+            timestamp: Date.now(),
+          };
         case "CallbackRouteError":
-          return "Erro na verificação das credenciais.";
+          return {
+            message: "Erro na verificação das credenciais.",
+            timestamp: Date.now(),
+          };
         default:
-          return "Ocorreu um erro ao tentar entrar.";
+          return {
+            message: "Ocorreu um erro ao tentar entrar.",
+            timestamp: Date.now(),
+          };
       }
     }
     throw error;
