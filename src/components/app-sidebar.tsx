@@ -46,7 +46,7 @@ export function AppSidebar() {
       <SidebarHeader className="border-b p-4">
         <div className="flex items-center gap-2 font-semibold text-primary">
           <ShieldCheck className="h-6 w-6" />
-          <span className="truncate">Autorizações de Saída</span>
+          <span className="truncate">Sistema de Ativos</span>
         </div>
       </SidebarHeader>
 
