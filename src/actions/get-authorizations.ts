@@ -1,14 +1,27 @@
 "use server";
 import prisma from "@/lib/prisma";
 
-const getAuthorizations = async () => {
-    const authorizations = await prisma.authorization.findMany()
+// Adicionar paginação com número de itens por página e número da página
+// Adicionar variável para que o usuário escolha a ordenação (asc ou desc)
+export const getAuthorizations = async () => {
+  try {
+    const authorizations = await prisma.authorization.findMany({
+      include: {
+        items: true,
+        user: {
+          select: {
+            name: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
 
-    if (!authorizations || authorizations.length === 0) {
-        throw new Error("No authorizations found");
-    }
-
-    return authorizations;
-}
-
-export default getAuthorizations;
+    return authorizations || [];
+  } catch (error) {
+    console.error("Erro ao buscar autorizações:", error);
+    return [];
+  }
+};
