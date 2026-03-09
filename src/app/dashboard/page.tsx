@@ -1,4 +1,5 @@
 import { getAuthorizations } from "@/actions/get-authorizations";
+import { AuthorizationsTable } from "@/components/authorizations-table";
 
 export default async function DashboardPage() {
   const authorizations = await getAuthorizations();
@@ -15,7 +16,7 @@ export default async function DashboardPage() {
             </p>
           </div>
         ) : (
-          <h1>Autorizações encontradas</h1>
+          <AuthorizationsTable data={authorizations} />
         )}
       </div>
     </div>
