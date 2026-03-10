@@ -1,5 +1,6 @@
 "use client";
 
+import { useTransition } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus, Trash2 } from "lucide-react";
@@ -19,7 +20,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { authorizationSchema, AuthorizationFormValues } from "@/lib/schemas";
-import { startTransition } from "react";
 import { createAuthorization } from "@/actions/create-authorization";
 import { toast } from "sonner";
 
@@ -28,6 +28,8 @@ export function CreateAuthorizationForm({
 }: {
   setOpen?: (open: boolean) => void;
 }) {
+  const [isPending, startTransition] = useTransition();
+
   const form = useForm<AuthorizationFormValues>({
     resolver: zodResolver(authorizationSchema),
     defaultValues: {
@@ -45,10 +47,9 @@ export function CreateAuthorizationForm({
   });
 
   const onSubmit = async (values: AuthorizationFormValues) => {
-    console.log("Submitting form with values:", values); // Log dos valores do formulário
+    //console.log("Submitting form with values:", values); // Log dos valores do formulário
     startTransition(async () => {
       const result = await createAuthorization(values);
-
       if (result.error) {
         toast.error(result.error);
       } else {
@@ -209,8 +210,12 @@ export function CreateAuthorizationForm({
             ))}
           </div>
 
-          <Button type="submit" className="cursor-pointer w-full">
-            Salvar Autorização
+          <Button
+            type="submit"
+            className="cursor-pointer w-full"
+            disabled={isPending}
+          >
+            {isPending ? "Salvando..." : "Salvar Autorização"}
           </Button>
         </form>
       </Form>
