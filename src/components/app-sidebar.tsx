@@ -77,7 +77,7 @@ export function AppSidebar() {
                       <span>Nova Autorização</span>
                     </SidebarMenuButton>
                   </DialogTrigger>
-                  <CreateAuthorizationForm />
+                  <CreateAuthorizationForm setOpen={setIsDialogOpen} />
                 </Dialog>
               </SidebarMenuItem>
             </SidebarMenu>

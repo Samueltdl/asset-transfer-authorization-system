@@ -54,7 +54,7 @@ export function CreateAuthorizationForm({
       } else {
         toast.success("Autorização cadastrada com sucesso!");
         form.reset();
-        //setOpen(false); // Fecha o Dialog da Sidebar
+        setOpen?.(false);
       }
     });
   };
