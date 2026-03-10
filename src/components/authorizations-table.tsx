@@ -62,10 +62,14 @@ export function AuthorizationsTable({ data }: AuthorizationsTableProps) {
               </TableCell>
               <TableCell>
                 <Badge
-                  variant={
+                  className={
                     auth.authorizationStatus === "PENDING"
-                      ? "outline"
-                      : "default"
+                      ? "bg-yellow-100 text-yellow-800"
+                      : auth.authorizationStatus === "APPROVED"
+                        ? "bg-green-100 text-green-800"
+                        : auth.authorizationStatus === "REJECTED"
+                          ? "bg-red-100 text-red-800"
+                          : "bg-gray-100 text-gray-800"
                   }
                 >
                   {auth.authorizationStatus}
