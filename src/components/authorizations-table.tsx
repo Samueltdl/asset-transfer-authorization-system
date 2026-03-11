@@ -10,6 +10,9 @@ import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Prisma } from "@/generated/prisma/client";
+import { Eye } from "lucide-react";
+import { AuthorizationDetailsDialog } from "@/components/authorization-details-dialog";
+import { Button } from "./ui/button";
 
 type AuthorizationWithRelations = Prisma.AuthorizationGetPayload<{
   include: {
@@ -33,6 +36,7 @@ export function AuthorizationsTable({ data }: AuthorizationsTableProps) {
             <TableHead>Responsável</TableHead>
             <TableHead>Itens</TableHead>
             <TableHead>Status</TableHead>
+            <TableHead>Ações</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -74,6 +78,18 @@ export function AuthorizationsTable({ data }: AuthorizationsTableProps) {
                 >
                   {auth.authorizationStatus}
                 </Badge>
+              </TableCell>
+              <TableCell>
+                <AuthorizationDetailsDialog authorization={auth}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="cursor-pointer"
+                    title="Ver detalhes"
+                  >
+                    <Eye className="w-4 h-4 mr-1" /> Detalhes
+                  </Button>
+                </AuthorizationDetailsDialog>
               </TableCell>
             </TableRow>
           ))}
