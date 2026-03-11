@@ -47,4 +47,7 @@ export const { auth, signIn, signOut } = NextAuth({
       return session;
     },
   },
+  session: {
+    maxAge: 3600, // token expira em 1 hora
+  },
 });
