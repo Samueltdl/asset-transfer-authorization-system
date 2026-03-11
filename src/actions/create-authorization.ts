@@ -3,22 +3,28 @@
 import prisma from "@/lib/prisma";
 import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
-import { AuthorizationFormValues } from "@/lib/schemas";
+import { authorizationSchema, AuthorizationFormValues } from "@/lib/schemas";
 
 export async function createAuthorization(data: AuthorizationFormValues) {
   const session = await auth();
-  if (!session?.user?.id) throw new Error("Não autorizado");
+  if (!session?.user?.id) {
+    return { error: "Não autorizado. Faça login novamente." };
+  }
 
+  const validatedData = authorizationSchema.safeParse(data);
+  if (!validatedData.success) return { error: "Dados inválidos." };
+
+  const validatedValues = validatedData.data;
   try {
     await prisma.authorization.create({
       data: {
-        origin: data.origin,
-        destination: data.destination,
-        responsible: data.responsible,
-        motive: data.motive,
-        userId: Number(session.user.id), // Convertendo para number conforme seu schema
+        origin: validatedValues.origin,
+        destination: validatedValues.destination,
+        responsible: validatedValues.responsible,
+        motive: validatedValues.motive,
+        userId: Number(session.user.id), // Convertendo para number
         items: {
-          create: data.items,
+          create: validatedValues.items,
         },
       },
     });
