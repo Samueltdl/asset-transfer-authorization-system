@@ -1,6 +1,12 @@
 "use client";
 
-import { LayoutDashboard, History, LogOut, ShieldCheck } from "lucide-react";
+import {
+  LayoutDashboard,
+  History,
+  LogOut,
+  ShieldCheck,
+  Users,
+} from "lucide-react";
 
 import {
   Sidebar,
@@ -26,6 +32,11 @@ const menuItems = [
     title: "Histórico / Gestão",
     url: "/dashboard/authorizations",
     icon: History,
+  },
+  {
+    title: "Gestão de Usuários",
+    url: "/dashboard/users",
+    icon: Users,
   },
 ];
 
