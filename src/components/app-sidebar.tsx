@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  LayoutDashboard,
-  PlusCircle,
-  History,
-  LogOut,
-  ShieldCheck,
-} from "lucide-react";
+import { LayoutDashboard, History, LogOut, ShieldCheck } from "lucide-react";
 
 import {
   Sidebar,
@@ -20,9 +14,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Dialog, DialogTrigger } from "./ui/dialog";
-import { useState } from "react";
-import { CreateAuthorizationForm } from "./create-authorization-form";
 import { logout } from "@/lib/actions";
 
 const menuItems = [
@@ -39,8 +30,6 @@ const menuItems = [
 ];
 
 export function AppSidebar() {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-
   return (
     <Sidebar variant="sidebar" collapsible="icon">
       <SidebarHeader className="border-b p-4">
@@ -65,21 +54,6 @@ export function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
-
-              <SidebarMenuItem>
-                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                  <DialogTrigger asChild>
-                    <SidebarMenuButton
-                      className="cursor-pointer"
-                      tooltip="Nova Autorização"
-                    >
-                      <PlusCircle />
-                      <span>Nova Autorização</span>
-                    </SidebarMenuButton>
-                  </DialogTrigger>
-                  <CreateAuthorizationForm setOpen={setIsDialogOpen} />
-                </Dialog>
-              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
