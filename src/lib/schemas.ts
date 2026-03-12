@@ -1,5 +1,6 @@
 import * as z from "zod";
 
+// Validação do formulário de autorização de saída
 export const authorizationSchema = z.object({
   origin: z.string().min(2, "Origem obrigatória").max(50, "Origem muito longa"),
   destination: z
@@ -35,3 +36,11 @@ export const authorizationSchema = z.object({
 });
 
 export type AuthorizationFormValues = z.infer<typeof authorizationSchema>;
+
+// Validação do formulário de login
+export const loginSchema = z.object({
+  email: z.string().email("Email inválido"),
+  password: z.string().min(5, "A senha deve conter no mínimo 5 caracteres"),
+});
+
+export type LoginFormValues = z.infer<typeof loginSchema>;
