@@ -4,9 +4,7 @@ import prisma from "@/lib/prisma";
 import { auth } from "@/auth";
 import { hash } from "bcryptjs";
 import { createUserSchema, CreateUserFormValues } from "@/lib/schemas";
-
-//------------------ TODO ------------------ //
-// Adicionar revalidação de caminho após criação do usuário (página de gerenciamento de usuários ainda não existe)
+import { revalidatePath } from "next/cache";
 
 export async function createUser(data: CreateUserFormValues) {
   const session = await auth();
@@ -45,7 +43,7 @@ export async function createUser(data: CreateUserFormValues) {
       },
     });
 
-    // ------------------- REVALIDAÇÃO DE CAMINHO AQUI -------------------- //
+    revalidatePath("/dashboard/users");
     return { success: true };
   } catch (error) {
     console.error("Erro ao cadastrar usuário:", error);
