@@ -50,7 +50,7 @@ export const createUserSchema = z.object({
   name: z.string().min(2, "Nome obrigatório").max(50, "Nome muito longo"),
   email: z.string().email("Email inválido"),
   password: z.string().min(5, "A senha deve conter no mínimo 5 caracteres"),
-  role: z.enum(["USER", "ADMIN"]).optional(), // O campo de função é opcional, pois o padrão será USER
+  role: z.enum(["USER", "ADMIN"], "Papel inválido"),
 });
 
 export type CreateUserFormValues = z.infer<typeof createUserSchema>;
