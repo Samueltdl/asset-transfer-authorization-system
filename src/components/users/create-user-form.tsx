@@ -18,12 +18,20 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { createUserSchema, CreateUserFormValues } from "@/lib/schemas";
 import { createUser } from "@/actions/create-user";
 import { toast } from "sonner";
 
 // --------------------------- TODO --------------------------- //
-// Transformar o campo de papel em um select com opções "USER" e "ADMIN"
 // Adicionar opção de esconder a senha enquanto o usuário digita (ícone de olho para mostrar/ocultar senha)
 export function CreateUserForm({
   setOpen,
@@ -96,11 +104,26 @@ export function CreateUserForm({
           <FormField
             control={form.control}
             name="role"
-            render={({ field }) => (
+            render={() => (
               <FormItem>
                 <FormLabel>Papel</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Select>
+                    <SelectTrigger className="w-full max-w-55 cursor-pointer">
+                      <SelectValue placeholder="Selecione o papel" />
+                    </SelectTrigger>
+                    <SelectContent position="popper">
+                      <SelectGroup>
+                        <SelectLabel>Papéis</SelectLabel>
+                        <SelectItem className="cursor-pointer" value="USER">
+                          Usuário
+                        </SelectItem>
+                        <SelectItem className="cursor-pointer" value="ADMIN">
+                          Administrador
+                        </SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
                 </FormControl>
                 <FormMessage />
               </FormItem>
