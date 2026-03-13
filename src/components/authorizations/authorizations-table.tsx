@@ -11,8 +11,8 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Prisma } from "@/generated/prisma/client";
 import { Eye } from "lucide-react";
-import { AuthorizationDetailsDialog } from "@/components/authorization-details-dialog";
-import { Button } from "./ui/button";
+import { AuthorizationDetailsDialog } from "@/components/authorizations/authorization-details-dialog";
+import { Button } from "../ui/button";
 
 type AuthorizationWithRelations = Prisma.AuthorizationGetPayload<{
   include: {

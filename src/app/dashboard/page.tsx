@@ -1,6 +1,6 @@
 import { getAuthorizations } from "@/actions/get-authorizations";
-import { AuthorizationsTable } from "@/components/authorizations-table";
-import { OpenCreateAuthorizationDialogButton } from "@/components/create-authorization-button";
+import { AuthorizationsTable } from "@/components/authorizations/authorizations-table";
+import { OpenCreateAuthorizationDialogButton } from "@/components/authorizations/open-create-authorization-dialog-button";
 
 export default async function DashboardPage() {
   const authorizations = await getAuthorizations();
