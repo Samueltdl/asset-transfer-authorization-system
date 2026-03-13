@@ -21,7 +21,7 @@ export function OpenCreateUserDialogButton({ isAdmin }: { isAdmin: boolean }) {
   return (
     <>
       <Button
-        className="bg-blue-500 hover:bg-blue-600"
+        className="bg-blue-500 hover:bg-blue-600 cursor-pointer text-white"
         onClick={handleOpenClick}
       >
         <PlusCircle />

@@ -11,7 +11,7 @@ export function OpenCreateAuthorizationDialogButton() {
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-blue-500 hover:bg-blue-600">
+        <Button className="bg-blue-500 hover:bg-blue-600 cursor-pointer text-white">
           <PlusCircle />
           <span>Nova Autorização</span>
         </Button>
