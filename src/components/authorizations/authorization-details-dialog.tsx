@@ -19,6 +19,9 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { ReactNode } from "react";
 import { Prisma } from "@/generated/prisma/client";
+import { Printer } from "lucide-react";
+import Link from "next/link";
+import { Button } from "../ui/button";
 
 type AuthorizationWithRelations = Prisma.AuthorizationGetPayload<{
   include: { items: true; user: { select: { name: true } } };
@@ -36,27 +39,42 @@ export function AuthorizationDetailsDialog({
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <div className="flex items-center justify-between pr-6">
-            <DialogTitle className="text-xl">
-              Detalhes da Autorização #{authorization.id}
-            </DialogTitle>
-            <Badge
-              className={
-                authorization.authorizationStatus === "PENDING"
-                  ? "bg-yellow-100 text-yellow-800"
-                  : authorization.authorizationStatus === "APPROVED"
-                    ? "bg-green-100 text-green-800"
-                    : authorization.authorizationStatus === "REJECTED"
-                      ? "bg-red-100 text-red-800"
-                      : "bg-gray-100 text-gray-800"
-              }
+          <div className="flex items-center justify-between pr-5 pt-3">
+            <div className="flex flex-col space-y-2">
+              <DialogTitle className="text-xl">
+                Detalhes da Autorização #{authorization.id}
+              </DialogTitle>
+              <Badge
+                className={
+                  authorization.authorizationStatus === "PENDING"
+                    ? "bg-yellow-100 text-yellow-800"
+                    : authorization.authorizationStatus === "APPROVED"
+                      ? "bg-green-100 text-green-800"
+                      : authorization.authorizationStatus === "REJECTED"
+                        ? "bg-red-100 text-red-800"
+                        : "bg-gray-100 text-gray-800"
+                }
+              >
+                {authorization.authorizationStatus}
+              </Badge>
+            </div>
+
+            <Button
+              asChild
+              className="bg-blue-500 hover:bg-blue-600 text-white cursor-pointer"
             >
-              {authorization.authorizationStatus}
-            </Badge>
+              <Link
+                href={`/print-authorization/${authorization.id}`}
+                target="_blank"
+              >
+                <Printer className="w-4 h-4 mr-2" />
+                Imprimir Termo
+              </Link>
+            </Button>
           </div>
         </DialogHeader>
 
-        <div className="space-y-6 mt-4">
+        <div className="space-y-6">
           <div className="grid grid-cols-2 gap-4 text-sm bg-slate-50 p-4 rounded-lg border">
             <div>
               <p className="text-muted-foreground font-medium">Origem</p>
