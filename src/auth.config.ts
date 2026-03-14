@@ -1,18 +1,19 @@
-import type { NextAuthConfig } from 'next-auth';
- 
+import type { NextAuthConfig } from "next-auth";
+
 export const authConfig = {
   pages: {
-    signIn: '/login',
+    signIn: "/login",
   },
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
-      if (isOnDashboard) {
+      const isOnDashboard = nextUrl.pathname.startsWith("/dashboard");
+      const isOnPrint = nextUrl.pathname.startsWith("/print-authorization");
+      if (isOnDashboard || isOnPrint) {
         if (isLoggedIn) return true;
         return false; // Redirect unauthenticated users to login page
       } else if (isLoggedIn) {
-        return Response.redirect(new URL('/dashboard', nextUrl));
+        return Response.redirect(new URL("/dashboard", nextUrl));
       }
       return true;
     },
