@@ -3,37 +3,27 @@ import { ptBR } from "date-fns/locale";
 import { notFound } from "next/navigation";
 import { PrintAuthorizationButton } from "@/components/authorizations/print-authorization-button";
 import { getAuthorizationById } from "@/actions/get-authorization-by-id";
+import { Prisma } from "@/generated/prisma/client";
 
-export default async function PrintAuthorizationPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  // 1. Resolvendo a Promise para obter o ID como string
-  const resolvedParams = await params;
-  const stringId = resolvedParams.id;
+// Definindo tipo para as autorizações, para evitar o uso de "any" e melhorar a legibilidade do código.
+type Authorization = Prisma.AuthorizationGetPayload<{
+  include: {
+    items: true;
+    user: {
+      select: { name: true };
+    };
+  };
+}>;
 
-  // 2. Convertendo a string para número
-  const numericId = Number(stringId);
+// Limite de itens para que sejam impressas 2 vias na mesma página. Acima disso, só a 1ª via é impressa para evitar que o documento fique muito longo.
+const MAX_ITEMS_FOR_DUAL_PRINT = 8;
 
-  // 3. Se não for um número válido ou estiver ausente, encerra aqui
-  if (!stringId || isNaN(numericId)) {
-    console.error("ID inválido recebido na URL:", stringId);
-    return notFound();
-  }
-
-  const authorization = await getAuthorizationById(numericId);
-
-  if (!authorization) return notFound();
-
+// Componente do recibo
+function ReceiptTemplate({ authorization }: { authorization: Authorization }) {
   return (
-    // O 'print:p-0' e 'print:m-0' removem as margens na hora de imprimir.
-    <div className="min-h-screen bg-white text-black p-8 print:p-0 mx-auto max-w-4xl font-sans text-sm">
-      {/* Componente que aciona a janela de impressão automaticamente */}
-      <PrintAuthorizationButton />
-
+    <div className="flex flex-col">
       {/* Cabeçalho do Documento */}
-      <div className="text-center border-b-2 border-black pb-2">
+      <div className="text-center border-b-2 border-black pb-2 relative">
         <h1 className="text-xl font-bold uppercase">
           Termo de Responsabilidade e Saída de Ativos
         </h1>
@@ -66,7 +56,7 @@ export default async function PrintAuthorizationPage({
         <p>
           <strong>Destino:</strong> {authorization.destination}
         </p>
-        <p>
+        <p className="col-span-2">
           <strong>Motivo:</strong> {authorization.motive}
         </p>
       </div>
@@ -104,21 +94,66 @@ export default async function PrintAuthorizationPage({
 
       {/* Área de Assinaturas */}
       <div className="grid grid-cols-3 mt-15 text-xs">
-        <div className="flex flex-col items-center">
-          <div className="w-50 border-t border-black"></div>
-          <p className="font-bold">{authorization.user.name}</p>
-          <p>Visto da Autorização</p>
+        <div className="flex flex-col items-center text-center">
+          <div className="w-48 border-t border-black"></div>
+          <p className="font-bold mt-1">{authorization.user.name}</p>
+          <p>Visto da Autorização (TI)</p>
         </div>
-        <div className="flex flex-col items-center">
-          <div className="w-50 border-t border-black"></div>
-          <p className="font-bold">{authorization.responsible}</p>
-          <p>Visto do Responsável pela Retirada</p>
+        <div className="flex flex-col items-center text-center">
+          <div className="w-48 border-t border-black"></div>
+          <p className="font-bold mt-1">{authorization.responsible}</p>
+          <p>Responsável pela Retirada</p>
         </div>
-        <div className="flex flex-col items-center">
-          <div className="w-50 border-t border-black"></div>
-          <p>Visto e Data de Retorno</p>
+        <div className="flex flex-col items-center text-center">
+          <div className="w-48 border-t border-black"></div>
+          <p className="mt-1">Visto e Data de Retorno</p>
         </div>
       </div>
+    </div>
+  );
+}
+
+// Página de Impressão da Autorização
+export default async function PrintAuthorizationPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  // 1. Resolvendo a Promise para obter o ID como string
+  const resolvedParams = await params;
+  const stringId = resolvedParams.id;
+  // 2. Convertendo a string para número
+  const numericId = Number(stringId);
+
+  // 3. Se não for um número válido ou estiver ausente, encerra aqui
+  if (!stringId || isNaN(numericId)) {
+    console.error("ID inválido recebido na URL:", stringId);
+    return notFound();
+  }
+
+  const authorization = await getAuthorizationById(numericId);
+  if (!authorization) return notFound();
+
+  const shouldPrintTwoCopies =
+    authorization.items.length <= MAX_ITEMS_FOR_DUAL_PRINT;
+
+  return (
+    <div className="min-h-screen bg-white text-black p-8 print:p-0 mx-auto max-w-4xl font-sans text-sm relative">
+      <PrintAuthorizationButton />
+
+      {/* Renderiza a 1ª Via sempre */}
+      <ReceiptTemplate authorization={authorization} />
+
+      {/* Se tiver poucos itens, renderiza a linha pontilhada e a 2ª Via */}
+      {shouldPrintTwoCopies && (
+        <>
+          <div className="flex items-center justify-center my-2 print:my-2 opacity-60">
+            <span className="border-t-2 border-dashed border-gray-500 w-full"></span>
+          </div>
+
+          <ReceiptTemplate authorization={authorization} />
+        </>
+      )}
     </div>
   );
 }
