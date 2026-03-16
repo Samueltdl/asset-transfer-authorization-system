@@ -9,10 +9,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { Eye } from "lucide-react";
-import { AuthorizationDetailsDialog } from "./authorization-details-dialog";
 import { DropdownMenuAuthorizationActions } from "./dropdown-menu-authorization-actions";
-import { Button } from "../ui/button";
 import { AuthorizationWithRelations } from "@/types";
 
 interface AuthorizationsTableProps {
@@ -74,19 +71,7 @@ export function AuthorizationsTable({ data }: AuthorizationsTableProps) {
                 </Badge>
               </TableCell>
               <TableCell>
-                <AuthorizationDetailsDialog authorization={auth}>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="cursor-pointer"
-                    title="Ver detalhes"
-                  >
-                    <Eye className="w-4 h-4 mr-1" /> Detalhes
-                  </Button>
-                </AuthorizationDetailsDialog>
-              </TableCell>
-              <TableCell>
-                <DropdownMenuAuthorizationActions />
+                <DropdownMenuAuthorizationActions authorization={auth} />
               </TableCell>
             </TableRow>
           ))}
