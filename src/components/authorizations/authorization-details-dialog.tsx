@@ -18,14 +18,10 @@ import { Separator } from "@/components/ui/separator";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { ReactNode } from "react";
-import { Prisma } from "@/generated/prisma/client";
 import { Printer } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui/button";
-
-type AuthorizationWithRelations = Prisma.AuthorizationGetPayload<{
-  include: { items: true; user: { select: { name: true } } };
-}>;
+import { AuthorizationWithRelations } from "@/types";
 
 export function AuthorizationDetailsDialog({
   authorization,

@@ -9,17 +9,11 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { Prisma } from "@/generated/prisma/client";
 import { Eye } from "lucide-react";
-import { AuthorizationDetailsDialog } from "@/components/authorizations/authorization-details-dialog";
+import { AuthorizationDetailsDialog } from "./authorization-details-dialog";
+import { DropdownMenuAuthorizationActions } from "./dropdown-menu-authorization-actions";
 import { Button } from "../ui/button";
-
-type AuthorizationWithRelations = Prisma.AuthorizationGetPayload<{
-  include: {
-    items: true;
-    user: { select: { name: true } };
-  };
-}>;
+import { AuthorizationWithRelations } from "@/types";
 
 interface AuthorizationsTableProps {
   data: AuthorizationWithRelations[];
@@ -90,6 +84,9 @@ export function AuthorizationsTable({ data }: AuthorizationsTableProps) {
                     <Eye className="w-4 h-4 mr-1" /> Detalhes
                   </Button>
                 </AuthorizationDetailsDialog>
+              </TableCell>
+              <TableCell>
+                <DropdownMenuAuthorizationActions />
               </TableCell>
             </TableRow>
           ))}

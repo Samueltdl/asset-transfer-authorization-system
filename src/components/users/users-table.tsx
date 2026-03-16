@@ -7,17 +7,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Prisma } from "@/generated/prisma/client";
-
-type UserWithRelations = Prisma.UserGetPayload<{
-  include: {
-    authorizations: {
-      select: {
-        id: true; // Apenas para mostrar o número de autorizações, não precisa de mais detalhes aqui
-      };
-    };
-  };
-}>;
+import { UserWithRelations } from "@/types";
 
 interface UsersTableProps {
   data: UserWithRelations[];
