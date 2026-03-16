@@ -128,16 +128,6 @@ export function CreateAuthorizationForm({
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-medium">Itens / Patrimônios</h3>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={() =>
-                  append({ assetNumber: "", itemDescription: "", amount: 1 })
-                }
-              >
-                <Plus className="w-4 h-4 mr-1" /> Adicionar Item
-              </Button>
             </div>
 
             {fields.map((field, index) => (
@@ -198,6 +188,7 @@ export function CreateAuthorizationForm({
                   </div>
                 </div>
                 <Button
+                  className="cursor-pointer"
                   type="button"
                   variant="ghost"
                   size="icon"
@@ -208,11 +199,21 @@ export function CreateAuthorizationForm({
                 </Button>
               </div>
             ))}
+            <Button
+              className="cursor-pointer"
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() =>
+                append({ assetNumber: "", itemDescription: "", amount: 1 })
+              }
+            >
+              <Plus className="w-4 h-4 mr-1" /> Adicionar Item
+            </Button>
           </div>
-
           <Button
             type="submit"
-            className="cursor-pointer w-full"
+            className="cursor-pointer w-full bg-blue-500 hover:bg-blue-600 text-white"
             disabled={isPending}
           >
             {isPending ? "Salvando..." : "Salvar Autorização"}
