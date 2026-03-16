@@ -53,9 +53,11 @@ model Authorization {
   user                User                @relation(fields: [userId], references: [id])
   userId              Int
   items               AuthorizationItem[]
+  isDeleted           Boolean             @default(false)
   createdAt           DateTime            @default(now())
   updatedAt           DateTime            @updatedAt
   returnedAt          DateTime?
+  deletedAt           DateTime?
 
   @@index([userId])
   @@index([authorizationStatus])
