@@ -97,7 +97,7 @@ function ReceiptTemplate({ authorization }: { authorization: Authorization }) {
         <div className="flex flex-col items-center text-center">
           <div className="w-48 border-t border-black"></div>
           <p className="font-bold mt-1">{authorization.user.name}</p>
-          <p>Visto da Autorização (TI)</p>
+          <p>Visto da Autorização</p>
         </div>
         <div className="flex flex-col items-center text-center">
           <div className="w-48 border-t border-black"></div>
