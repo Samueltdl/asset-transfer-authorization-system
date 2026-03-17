@@ -17,10 +17,11 @@ import {
   Eye,
   CircleChevronDown,
   PrinterIcon,
+  Undo2Icon,
 } from "lucide-react";
 import { AuthorizationWithRelations } from "@/types";
 import { AuthorizationDetailsDialog } from "./authorization-details-dialog";
-import { setApproved } from "@/actions/set-authorization-status";
+import { setApproved, setReturn } from "@/actions/set-authorization-status";
 
 export function DropdownMenuAuthorizationActions({
   authorization,
@@ -33,6 +34,7 @@ export function DropdownMenuAuthorizationActions({
 }) {
   const [isDeleting, startDeleteTransition] = useTransition();
   const [isPrinting, startPrintTransition] = useTransition();
+  const [isReturning, startReturnTransition] = useTransition();
 
   const handlePrint = () => {
     startPrintTransition(async () => {
@@ -44,6 +46,22 @@ export function DropdownMenuAuthorizationActions({
         window.open(`/print-authorization/${authorization.id}`, "_blank");
         toast.success("Autorização aprovada e pronta para impressão!");
       }
+    });
+  };
+
+  const handleReturn = () => {
+    const confirmed = window.confirm(
+      "Confirmar a devolução de todos os itens desta autorização?",
+    );
+    if (!confirmed) return;
+
+    startReturnTransition(async () => {
+      const result = await setReturn(authorization.id);
+      if (result.error) toast.error("Erro", { description: result.error });
+      else
+        toast.success("Devolvido", {
+          description: "A devolução foi registada com sucesso.",
+        });
     });
   };
 
@@ -85,6 +103,18 @@ export function DropdownMenuAuthorizationActions({
             <PrinterIcon />
             Imprimir Termo
           </DropdownMenuItem>
+          {authorization.authorizationStatus === "APPROVED" && (
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={handleReturn}
+              disabled={isReturning}
+              onSelect={(e) => e.preventDefault()}
+            >
+              <Undo2Icon />
+              Registrar Devolução
+            </DropdownMenuItem>
+          )}
+
           {(currentUserRole === "ADMIN" ||
             authorization.userId === currentUserId) && (
             <>
