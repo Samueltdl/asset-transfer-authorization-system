@@ -21,14 +21,6 @@ async function validUser(id: number) {
       return { error: "Autorização não encontrada." };
     }
 
-    // Verificar se o usuário logado é o proprietário da autorização ou um admin
-    if (
-      authorization.userId !== Number(session.user.id) &&
-      session.user.role !== "ADMIN"
-    ) {
-      return { error: "Não autorizado." };
-    }
-
     return { success: true, authorization: authorization };
   } catch (error) {
     console.error("Erro ao validar usuário:", error);
