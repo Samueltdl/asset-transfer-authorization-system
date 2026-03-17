@@ -2,10 +2,10 @@
 
 import {
   LayoutDashboard,
-  History,
   LogOut,
   ShieldCheck,
   Users,
+  ClipboardList,
 } from "lucide-react";
 
 import {
@@ -29,12 +29,12 @@ const menuItems = [
     icon: LayoutDashboard,
   },
   {
-    title: "Histórico / Gestão",
+    title: "Autorizações",
     url: "/dashboard/authorizations",
-    icon: History,
+    icon: ClipboardList,
   },
   {
-    title: "Gestão de Usuários",
+    title: "Usuários",
     url: "/dashboard/users",
     icon: Users,
   },
@@ -52,7 +52,7 @@ export function AppSidebar() {
 
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Gestão de Ativos</SidebarGroupLabel>
+          <SidebarGroupLabel>Gestão</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => (
