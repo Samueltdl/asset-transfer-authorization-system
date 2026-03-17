@@ -14,9 +14,15 @@ import { AuthorizationWithRelations } from "@/types";
 
 interface AuthorizationsTableProps {
   data: AuthorizationWithRelations[];
+  currentUserId: number;
+  currentUserRole: string;
 }
 
-export function AuthorizationsTable({ data }: AuthorizationsTableProps) {
+export function AuthorizationsTable({
+  data,
+  currentUserId,
+  currentUserRole,
+}: AuthorizationsTableProps) {
   return (
     <div className="rounded-md border bg-white">
       <Table>
@@ -71,7 +77,11 @@ export function AuthorizationsTable({ data }: AuthorizationsTableProps) {
                 </Badge>
               </TableCell>
               <TableCell>
-                <DropdownMenuAuthorizationActions authorization={auth} />
+                <DropdownMenuAuthorizationActions
+                  authorization={auth}
+                  currentUserId={currentUserId}
+                  currentUserRole={currentUserRole}
+                />
               </TableCell>
             </TableRow>
           ))}

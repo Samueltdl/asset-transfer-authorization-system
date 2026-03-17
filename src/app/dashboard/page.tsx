@@ -1,8 +1,10 @@
 import { getAuthorizations } from "@/actions/get-authorizations";
 import { AuthorizationsTable } from "@/components/authorizations/authorizations-table";
 import { OpenCreateAuthorizationDialogButton } from "@/components/authorizations/open-create-authorization-dialog-button";
+import { auth } from "@/auth";
 
 export default async function DashboardPage() {
+  const session = await auth();
   const authorizations = await getAuthorizations();
 
   return (
@@ -20,7 +22,11 @@ export default async function DashboardPage() {
             </p>
           </div>
         ) : (
-          <AuthorizationsTable data={authorizations} />
+          <AuthorizationsTable
+            data={authorizations}
+            currentUserId={Number(session?.user?.id)}
+            currentUserRole={session?.user?.role as string}
+          />
         )}
       </div>
     </div>

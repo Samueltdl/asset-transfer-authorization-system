@@ -21,8 +21,12 @@ import Link from "next/link";
 
 export function DropdownMenuAuthorizationActions({
   authorization,
+  currentUserId,
+  currentUserRole,
 }: {
   authorization: AuthorizationWithRelations;
+  currentUserId: number;
+  currentUserRole: string;
 }) {
   return (
     <DropdownMenu>
@@ -51,18 +55,31 @@ export function DropdownMenuAuthorizationActions({
               Imprimir Termo
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem className="cursor-pointer">
-            <PencilIcon />
-            Editar
-          </DropdownMenuItem>
+          {(currentUserRole === "ADMIN" ||
+            authorization.userId === currentUserId) && (
+            <>
+              <DropdownMenuItem className="cursor-pointer">
+                <PencilIcon />
+                Editar
+              </DropdownMenuItem>
+            </>
+          )}
         </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem variant="destructive" className="cursor-pointer">
-            <TrashIcon />
-            Deletar
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
+        {(currentUserRole === "ADMIN" ||
+          authorization.userId === currentUserId) && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuItem
+                variant="destructive"
+                className="cursor-pointer"
+              >
+                <TrashIcon />
+                Deletar
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          </>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );
