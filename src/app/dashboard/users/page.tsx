@@ -13,7 +13,7 @@ export default async function UsersManagementPage() {
       <div className="space-y-6">
         <div className="flex flex-row justify-between items-center">
           <h1 className="text-3xl font-bold">Painel de Gestão de Usuários</h1>
-          <OpenCreateUserDialogButton isAdmin={isAdmin} />
+          {isAdmin && <OpenCreateUserDialogButton isAdmin={isAdmin} />}
         </div>
 
         {users.length === 0 ? (
