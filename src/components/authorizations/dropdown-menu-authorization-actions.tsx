@@ -66,6 +66,11 @@ export function DropdownMenuAuthorizationActions({
   };
 
   const handleDelete = () => {
+    const confirmed = window.confirm(
+      "Tem a certeza que deseja excluir esta autorização?",
+    );
+    if (!confirmed) return;
+
     startDeleteTransition(async () => {
       const result = await deleteAuthorization(authorization.id);
       if (result.success) {
