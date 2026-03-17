@@ -1,4 +1,7 @@
 "use client";
+import { useTransition } from "react";
+import { toast } from "sonner";
+import { deleteAuthorization } from "@/actions/delete-authorization";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -28,6 +31,19 @@ export function DropdownMenuAuthorizationActions({
   currentUserId: number;
   currentUserRole: string;
 }) {
+  const [isPending, startTransition] = useTransition();
+
+  const handleDelete = () => {
+    startTransition(async () => {
+      const result = await deleteAuthorization(authorization.id);
+      if (result.success) {
+        toast.success("Autorização deletada com sucesso!");
+      } else {
+        toast.error("Erro ao deletar autorização.");
+      }
+    });
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -73,6 +89,9 @@ export function DropdownMenuAuthorizationActions({
               <DropdownMenuItem
                 variant="destructive"
                 className="cursor-pointer"
+                onClick={handleDelete}
+                disabled={isPending}
+                onSelect={(e) => e.preventDefault()}
               >
                 <TrashIcon />
                 Deletar
