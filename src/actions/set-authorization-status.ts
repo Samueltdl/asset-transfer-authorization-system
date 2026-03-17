@@ -41,7 +41,7 @@ export async function setReturn(id: number) {
   // Verificar se o usuário é válido e tem permissão para registrar a devolução
   const validation = await validUser(id);
   if (validation?.error) {
-    return validation.error; // Retorna o erro se a validação falhar
+    return { error: validation.error }; // Retorna o erro se a validação falhar
   }
 
   if (validation.authorization?.authorizationStatus !== "APPROVED") {
@@ -67,11 +67,11 @@ export async function setReturn(id: number) {
 }
 
 // Função para registrar a aprovação de uma autorização, atualizando seu status
-export async function setAproved(id: number) {
+export async function setApproved(id: number) {
   // Verificar se o usuário é válido e tem permissão para registrar a aprovação
   const validation = await validUser(id);
   if (validation?.error) {
-    return validation.error; // Retorna o erro se a validação falhar
+    return { error: validation.error }; // Retorna o erro se a validação falhar
   }
 
   try {
@@ -87,7 +87,7 @@ export async function setAproved(id: number) {
     }
 
     revalidatePath("/dashboard/authorizations");
-    return { success: true };
+    return { authorization: validation.authorization };
   } catch (error) {
     console.error("Erro ao registrar aprovação:", error);
     return { error: "Falha ao registrar a aprovação no sistema." };
