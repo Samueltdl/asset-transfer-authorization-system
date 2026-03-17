@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import { AuthorizationWithRelations } from "@/types";
 import { AuthorizationDetailsDialog } from "./authorization-details-dialog";
-import Link from "next/link";
+import { setApproved } from "@/actions/set-authorization-status";
 
 export function DropdownMenuAuthorizationActions({
   authorization,
@@ -31,10 +31,24 @@ export function DropdownMenuAuthorizationActions({
   currentUserId: number;
   currentUserRole: string;
 }) {
-  const [isPending, startTransition] = useTransition();
+  const [isDeleting, startDeleteTransition] = useTransition();
+  const [isPrinting, startPrintTransition] = useTransition();
+
+  const handlePrint = () => {
+    startPrintTransition(async () => {
+      const result = await setApproved(authorization.id);
+      if (result.error) {
+        toast.error("Erro ao aprovar autorização.");
+      } else {
+        // Redireciona para a página de impressão
+        window.open(`/print-authorization/${authorization.id}`, "_blank");
+        toast.success("Autorização aprovada e pronta para impressão!");
+      }
+    });
+  };
 
   const handleDelete = () => {
-    startTransition(async () => {
+    startDeleteTransition(async () => {
       const result = await deleteAuthorization(authorization.id);
       if (result.success) {
         toast.success("Autorização deletada com sucesso!");
@@ -62,14 +76,14 @@ export function DropdownMenuAuthorizationActions({
               Ver Detalhes
             </DropdownMenuItem>
           </AuthorizationDetailsDialog>
-          <DropdownMenuItem asChild className="cursor-pointer">
-            <Link
-              href={`/print-authorization/${authorization.id}`}
-              target="_blank"
-            >
-              <PrinterIcon />
-              Imprimir Termo
-            </Link>
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={handlePrint}
+            disabled={isPrinting}
+            onSelect={(e) => e.preventDefault()}
+          >
+            <PrinterIcon />
+            Imprimir Termo
           </DropdownMenuItem>
           {(currentUserRole === "ADMIN" ||
             authorization.userId === currentUserId) && (
@@ -90,7 +104,7 @@ export function DropdownMenuAuthorizationActions({
                 variant="destructive"
                 className="cursor-pointer"
                 onClick={handleDelete}
-                disabled={isPending}
+                disabled={isDeleting}
                 onSelect={(e) => e.preventDefault()}
               >
                 <TrashIcon />
