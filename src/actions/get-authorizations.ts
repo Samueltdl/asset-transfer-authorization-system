@@ -6,6 +6,9 @@ import prisma from "@/lib/prisma";
 export const getAuthorizations = async () => {
   try {
     const authorizations = await prisma.authorization.findMany({
+      where: {
+        isDeleted: false,
+      },
       include: {
         items: true,
         user: {
