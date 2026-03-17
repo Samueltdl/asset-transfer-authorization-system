@@ -18,9 +18,6 @@ import { Separator } from "@/components/ui/separator";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { ReactNode } from "react";
-import { Printer } from "lucide-react";
-import Link from "next/link";
-import { Button } from "../ui/button";
 import { AuthorizationWithRelations } from "@/types";
 
 export function AuthorizationDetailsDialog({
@@ -54,19 +51,6 @@ export function AuthorizationDetailsDialog({
                 {authorization.authorizationStatus}
               </Badge>
             </div>
-
-            <Button
-              asChild
-              className="bg-blue-500 hover:bg-blue-600 text-white cursor-pointer"
-            >
-              <Link
-                href={`/print-authorization/${authorization.id}`}
-                target="_blank"
-              >
-                <Printer className="w-4 h-4 mr-2" />
-                Imprimir Termo
-              </Link>
-            </Button>
           </div>
         </DialogHeader>
 
