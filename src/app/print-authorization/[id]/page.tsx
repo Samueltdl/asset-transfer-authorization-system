@@ -3,23 +3,17 @@ import { ptBR } from "date-fns/locale";
 import { notFound } from "next/navigation";
 import { PrintAuthorizationButton } from "@/components/authorizations/print-authorization-button";
 import { getAuthorizationById } from "@/actions/get-authorization-by-id";
-import { Prisma } from "@/generated/prisma/client";
-
-// Definindo tipo para as autorizações, para evitar o uso de "any" e melhorar a legibilidade do código.
-type Authorization = Prisma.AuthorizationGetPayload<{
-  include: {
-    items: true;
-    user: {
-      select: { name: true };
-    };
-  };
-}>;
+import { AuthorizationWithRelations } from "@/types";
 
 // Limite de itens para que sejam impressas 2 vias na mesma página. Acima disso, só a 1ª via é impressa para evitar que o documento fique muito longo.
 const MAX_ITEMS_FOR_DUAL_PRINT = 8;
 
 // Componente do recibo
-function ReceiptTemplate({ authorization }: { authorization: Authorization }) {
+function ReceiptTemplate({
+  authorization,
+}: {
+  authorization: AuthorizationWithRelations;
+}) {
   return (
     <div className="flex flex-col">
       {/* Cabeçalho do Documento */}
