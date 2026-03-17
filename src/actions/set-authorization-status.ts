@@ -36,6 +36,36 @@ async function validUser(id: number) {
   }
 }
 
+// Função para registrar a devolução de uma autorização, atualizando seu status e data de retorno
+export async function setReturn(id: number) {
+  // Verificar se o usuário é válido e tem permissão para registrar a devolução
+  const validation = await validUser(id);
+  if (validation?.error) {
+    return validation.error; // Retorna o erro se a validação falhar
+  }
+
+  if (validation.authorization?.authorizationStatus !== "APPROVED") {
+    return { error: "Apenas autorizações aprovadas podem ser devolvidas." };
+  }
+
+  try {
+    // Regista a devolução atualizando o status e a data de retorno
+    await prisma.authorization.update({
+      where: { id },
+      data: {
+        authorizationStatus: "RETURNED",
+        returnedAt: new Date(),
+      },
+    });
+
+    revalidatePath("/dashboard/authorizations");
+    return { success: true };
+  } catch (error) {
+    console.error("Erro ao registar devolução:", error);
+    return { error: "Falha ao registar a devolução no sistema." };
+  }
+}
+
 // Função para registrar a aprovação de uma autorização, atualizando seu status
 export async function setAproved(id: number) {
   // Verificar se o usuário é válido e tem permissão para registrar a aprovação
