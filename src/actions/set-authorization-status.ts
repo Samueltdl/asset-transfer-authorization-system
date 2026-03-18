@@ -66,6 +66,11 @@ export async function setApproved(id: number) {
     return { error: validation.error }; // Retorna o erro se a validação falhar
   }
 
+  // Verificar se a autorização já foi rejeitada, pois não pode ser aprovada
+  if (validation.authorization?.authorizationStatus === "REJECTED") {
+    return { error: "Autorização rejeitada não pode ser aprovada." };
+  }
+
   try {
     // Registra a aprovação apenas se o status atual for "PENDING", para evitar requisições desnecessárias ou mudanças de status indevidas
     if (validation.authorization?.authorizationStatus == "PENDING") {
