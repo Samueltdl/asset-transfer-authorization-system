@@ -70,10 +70,20 @@ export function AuthorizationsTable({
                         ? "bg-green-100 text-green-800"
                         : auth.authorizationStatus === "REJECTED"
                           ? "bg-red-100 text-red-800"
-                          : "bg-gray-100 text-gray-800"
+                          : auth.authorizationStatus === "RETURNED"
+                            ? "bg-blue-100 text-blue-800"
+                            : "bg-gray-100 text-gray-800"
                   }
                 >
-                  {auth.authorizationStatus}
+                  {auth.authorizationStatus === "PENDING"
+                    ? "PENDENTE"
+                    : auth.authorizationStatus === "APPROVED"
+                      ? "APROVADA"
+                      : auth.authorizationStatus === "REJECTED"
+                        ? "REJEITADA"
+                        : auth.authorizationStatus === "RETURNED"
+                          ? "DEVOLVIDA"
+                          : "DECONHECIDA"}
                 </Badge>
               </TableCell>
               <TableCell>

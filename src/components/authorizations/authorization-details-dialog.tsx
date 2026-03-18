@@ -45,10 +45,20 @@ export function AuthorizationDetailsDialog({
                       ? "bg-green-100 text-green-800"
                       : authorization.authorizationStatus === "REJECTED"
                         ? "bg-red-100 text-red-800"
-                        : "bg-gray-100 text-gray-800"
+                        : authorization.authorizationStatus === "RETURNED"
+                          ? "bg-blue-100 text-blue-800"
+                          : "bg-gray-100 text-gray-800"
                 }
               >
-                {authorization.authorizationStatus}
+                {authorization.authorizationStatus === "PENDING"
+                  ? "PENDENTE"
+                  : authorization.authorizationStatus === "APPROVED"
+                    ? "APROVADA"
+                    : authorization.authorizationStatus === "REJECTED"
+                      ? "REJEITADA"
+                      : authorization.authorizationStatus === "RETURNED"
+                        ? "DEVOLVIDA"
+                        : "DECONHECIDA"}
               </Badge>
             </div>
           </div>
