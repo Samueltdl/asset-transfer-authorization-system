@@ -99,15 +99,17 @@ export function DropdownMenuAuthorizationActions({
               Ver Detalhes
             </DropdownMenuItem>
           </AuthorizationDetailsDialog>
-          <DropdownMenuItem
-            className="cursor-pointer"
-            onClick={handlePrint}
-            disabled={isPrinting}
-            onSelect={(e) => e.preventDefault()}
-          >
-            <PrinterIcon />
-            Imprimir Termo
-          </DropdownMenuItem>
+          {authorization.authorizationStatus !== "REJECTED" && (
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={handlePrint}
+              disabled={isPrinting}
+              onSelect={(e) => e.preventDefault()}
+            >
+              <PrinterIcon />
+              Imprimir Termo
+            </DropdownMenuItem>
+          )}
           {authorization.authorizationStatus === "APPROVED" && (
             <DropdownMenuItem
               className="cursor-pointer"
