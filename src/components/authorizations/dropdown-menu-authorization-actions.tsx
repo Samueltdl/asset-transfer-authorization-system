@@ -1,5 +1,5 @@
 "use client";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { toast } from "sonner";
 import { deleteAuthorization } from "@/actions/delete-authorization";
 import { Button } from "@/components/ui/button";
@@ -22,6 +22,8 @@ import {
 import { AuthorizationWithRelations } from "@/types";
 import { AuthorizationDetailsDialog } from "./authorization-details-dialog";
 import { setApproved, setReturn } from "@/actions/set-authorization-status";
+import { UpdateAuthorizationForm } from "./update-authorization-form";
+import { Dialog, DialogTrigger } from "../ui/dialog";
 
 export function DropdownMenuAuthorizationActions({
   authorization,
@@ -35,6 +37,8 @@ export function DropdownMenuAuthorizationActions({
   const [isDeleting, startDeleteTransition] = useTransition();
   const [isPrinting, startPrintTransition] = useTransition();
   const [isReturning, startReturnTransition] = useTransition();
+
+  const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
 
   const handlePrint = () => {
     startPrintTransition(async () => {
@@ -130,10 +134,24 @@ export function DropdownMenuAuthorizationActions({
           {(currentUserRole === "ADMIN" ||
             authorization.userId === currentUserId) && (
             <>
-              <DropdownMenuItem className="cursor-pointer">
-                <PencilIcon />
-                Editar
-              </DropdownMenuItem>
+              <Dialog
+                open={isUpdateDialogOpen}
+                onOpenChange={setIsUpdateDialogOpen}
+              >
+                <DialogTrigger asChild>
+                  <DropdownMenuItem
+                    className="cursor-pointer"
+                    onSelect={(e) => e.preventDefault()}
+                  >
+                    <PencilIcon />
+                    Editar
+                  </DropdownMenuItem>
+                </DialogTrigger>
+                <UpdateAuthorizationForm
+                  authorization={authorization}
+                  setOpen={setIsUpdateDialogOpen}
+                />
+              </Dialog>
             </>
           )}
         </DropdownMenuGroup>
