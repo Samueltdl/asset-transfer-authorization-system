@@ -38,13 +38,18 @@ export function DropdownMenuAuthorizationActions({
 
   const handlePrint = () => {
     startPrintTransition(async () => {
-      const result = await setApproved(authorization.id);
-      if (result.error) {
-        toast.error("Erro ao aprovar autorização.");
+      if (authorization.authorizationStatus === "PENDING") {
+        const result = await setApproved(authorization.id);
+        if (result.error) {
+          toast.error("Erro ao aprovar autorização.");
+        } else {
+          // Redireciona para a página de impressão
+          window.open(`/print-authorization/${authorization.id}`, "_blank");
+          toast.success("Autorização aprovada e pronta para impressão!");
+        }
       } else {
         // Redireciona para a página de impressão
         window.open(`/print-authorization/${authorization.id}`, "_blank");
-        toast.success("Autorização aprovada e pronta para impressão!");
       }
     });
   };
@@ -104,7 +109,7 @@ export function DropdownMenuAuthorizationActions({
               className="cursor-pointer"
               onClick={handlePrint}
               disabled={isPrinting}
-              onSelect={(e) => e.preventDefault()}
+              //onSelect={(e) => e.preventDefault()}
             >
               <PrinterIcon />
               Imprimir Termo
@@ -115,7 +120,7 @@ export function DropdownMenuAuthorizationActions({
               className="cursor-pointer"
               onClick={handleReturn}
               disabled={isReturning}
-              onSelect={(e) => e.preventDefault()}
+              //onSelect={(e) => e.preventDefault()}
             >
               <Undo2Icon />
               Registrar Devolução
@@ -142,7 +147,7 @@ export function DropdownMenuAuthorizationActions({
                 className="cursor-pointer"
                 onClick={handleDelete}
                 disabled={isDeleting}
-                onSelect={(e) => e.preventDefault()}
+                //onSelect={(e) => e.preventDefault()}
               >
                 <TrashIcon />
                 Deletar
