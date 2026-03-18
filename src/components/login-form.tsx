@@ -65,7 +65,11 @@ export function LoginForm() {
           )}
         />
         <input type="hidden" name="redirectTo" value={callbackUrl} />
-        <Button type="submit" className="w-full" aria-disabled={isPending}>
+        <Button
+          type="submit"
+          className="w-full cursor-pointer bg-blue-500 hover:bg-blue-600 text-white"
+          aria-disabled={isPending}
+        >
           Entrar
         </Button>
       </form>
