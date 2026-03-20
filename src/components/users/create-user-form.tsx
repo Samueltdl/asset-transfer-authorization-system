@@ -104,27 +104,27 @@ export function CreateUserForm({
           <FormField
             control={form.control}
             name="role"
-            render={() => (
+            render={({ field }) => (
               <FormItem>
                 <FormLabel>Papel</FormLabel>
-                <FormControl>
-                  <Select>
+                <Select onValueChange={field.onChange}>
+                  <FormControl>
                     <SelectTrigger className="w-full max-w-55 cursor-pointer">
                       <SelectValue placeholder="Selecione o papel" />
                     </SelectTrigger>
-                    <SelectContent position="popper">
-                      <SelectGroup>
-                        <SelectLabel>Papéis</SelectLabel>
-                        <SelectItem className="cursor-pointer" value="USER">
-                          Usuário
-                        </SelectItem>
-                        <SelectItem className="cursor-pointer" value="ADMIN">
-                          Administrador
-                        </SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
+                  </FormControl>
+                  <SelectContent position="popper">
+                    <SelectGroup>
+                      <SelectLabel>Papéis</SelectLabel>
+                      <SelectItem className="cursor-pointer" value="USER">
+                        Usuário
+                      </SelectItem>
+                      <SelectItem className="cursor-pointer" value="ADMIN">
+                        Administrador
+                      </SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
