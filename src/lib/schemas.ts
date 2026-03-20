@@ -54,3 +54,19 @@ export const createUserSchema = z.object({
 });
 
 export type CreateUserFormValues = z.infer<typeof createUserSchema>;
+
+// Validação do formulário de edição de usuário
+export const updateUserSchema = createUserSchema.extend({
+  password: z
+    .string()
+    .min(5, "A senha deve conter no mínimo 5 caracteres")
+    .optional()
+    .or(z.literal("")),
+
+  accountStatus: z.enum(
+    ["ACTIVE", "INACTIVE", "SUSPENDED"],
+    "O status da conta é obrigatório",
+  ),
+});
+
+export type UpdateUserFormValues = z.infer<typeof updateUserSchema>;
