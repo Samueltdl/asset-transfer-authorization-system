@@ -21,7 +21,10 @@ export default async function UsersManagementPage() {
             <p className="text-muted-foreground">Nenhum usuário encontrado.</p>
           </div>
         ) : (
-          <UsersTable data={users} />
+          <UsersTable
+            data={users}
+            currentUserRole={String(session?.user?.role)}
+          />
         )}
       </div>
     </div>

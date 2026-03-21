@@ -8,12 +8,15 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { UserWithRelations } from "@/types";
+import { DropdownMenuUserActions } from "./dropdown-menu-user-actions";
 
-interface UsersTableProps {
+export function UsersTable({
+  data,
+  currentUserRole,
+}: {
   data: UserWithRelations[];
-}
-
-export function UsersTable({ data }: UsersTableProps) {
+  currentUserRole: string;
+}) {
   return (
     <div className="rounded-md border bg-white">
       <Table>
@@ -25,6 +28,7 @@ export function UsersTable({ data }: UsersTableProps) {
             <TableHead>Papel</TableHead>
             <TableHead>Autorizações</TableHead>
             <TableHead>Status da Conta</TableHead>
+            <TableHead>Ações</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -68,6 +72,13 @@ export function UsersTable({ data }: UsersTableProps) {
                 >
                   {user.accountStatus}
                 </Badge>
+              </TableCell>
+
+              <TableCell>
+                <DropdownMenuUserActions
+                  user={user}
+                  currentUserRole={currentUserRole}
+                />
               </TableCell>
             </TableRow>
           ))}
