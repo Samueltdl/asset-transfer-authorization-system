@@ -12,6 +12,7 @@ import { PencilIcon, Eye, CircleChevronDown } from "lucide-react";
 import { UserWithRelations } from "@/types";
 import { UpdateUserForm } from "./update-user-form";
 import { Dialog, DialogTrigger } from "../ui/dialog";
+import { UserDetailsDialog } from "./user-details-dialog";
 
 export function DropdownMenuUserActions({
   user,
@@ -31,14 +32,15 @@ export function DropdownMenuUserActions({
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuGroup>
-          <DropdownMenuItem
-            className="cursor-pointer"
-            onSelect={(e) => e.preventDefault()}
-          >
-            <Eye />
-            Ver Detalhes
-          </DropdownMenuItem>
-
+          <UserDetailsDialog user={user}>
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onSelect={(e) => e.preventDefault()}
+            >
+              <Eye />
+              Ver Detalhes
+            </DropdownMenuItem>
+          </UserDetailsDialog>
           {currentUserRole === "ADMIN" && (
             <>
               <Dialog
