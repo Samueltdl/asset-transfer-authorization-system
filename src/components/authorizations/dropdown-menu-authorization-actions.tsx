@@ -10,19 +10,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  PencilIcon,
-  Eye,
-  CircleChevronDown,
-  PrinterIcon,
-  Undo2Icon,
-} from "lucide-react";
+import { PencilIcon, Eye, CircleChevronDown, PrinterIcon } from "lucide-react";
 import { AuthorizationWithRelations } from "@/types";
 import { AuthorizationDetailsDialog } from "./authorization-details-dialog";
-import { setApproved, setReturn } from "@/actions/set-authorization-status";
+import { setApproved } from "@/actions/set-authorization-status";
 import { UpdateAuthorizationForm } from "./update-authorization-form";
 import { Dialog, DialogTrigger } from "../ui/dialog";
 import { DeleteAuthorizationAlertDialog } from "./delete-authorization-alert-dialog";
+import { SetReturnAuthorizationAlertDialog } from "./set-return-authorization-alert-dialog";
 
 export function DropdownMenuAuthorizationActions({
   authorization,
@@ -34,7 +29,6 @@ export function DropdownMenuAuthorizationActions({
   currentUserRole: string;
 }) {
   const [isPrinting, startPrintTransition] = useTransition();
-  const [isReturning, startReturnTransition] = useTransition();
 
   const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
 
@@ -53,22 +47,6 @@ export function DropdownMenuAuthorizationActions({
         // Redireciona para a página de impressão
         window.open(`/print-authorization/${authorization.id}`, "_blank");
       }
-    });
-  };
-
-  const handleReturn = () => {
-    const confirmed = window.confirm(
-      "Confirmar a devolução de todos os itens desta autorização?",
-    );
-    if (!confirmed) return;
-
-    startReturnTransition(async () => {
-      const result = await setReturn(authorization.id);
-      if (result.error) toast.error("Erro", { description: result.error });
-      else
-        toast.success("Devolvido", {
-          description: "A devolução foi registada com sucesso.",
-        });
     });
   };
 
@@ -102,15 +80,7 @@ export function DropdownMenuAuthorizationActions({
             </DropdownMenuItem>
           )}
           {authorization.authorizationStatus === "APPROVED" && (
-            <DropdownMenuItem
-              className="cursor-pointer"
-              onClick={handleReturn}
-              disabled={isReturning}
-              //onSelect={(e) => e.preventDefault()}
-            >
-              <Undo2Icon />
-              Registrar Devolução
-            </DropdownMenuItem>
+            <SetReturnAuthorizationAlertDialog authorization={authorization} />
           )}
 
           {(currentUserRole === "ADMIN" ||
