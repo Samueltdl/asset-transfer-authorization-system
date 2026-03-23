@@ -1,7 +1,6 @@
 "use client";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
-import { deleteAuthorization } from "@/actions/delete-authorization";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -13,7 +12,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {
   PencilIcon,
-  TrashIcon,
   Eye,
   CircleChevronDown,
   PrinterIcon,
@@ -24,6 +22,7 @@ import { AuthorizationDetailsDialog } from "./authorization-details-dialog";
 import { setApproved, setReturn } from "@/actions/set-authorization-status";
 import { UpdateAuthorizationForm } from "./update-authorization-form";
 import { Dialog, DialogTrigger } from "../ui/dialog";
+import { DeleteAuthorizationAlertDialog } from "./delete-authorization-alert-dialog";
 
 export function DropdownMenuAuthorizationActions({
   authorization,
@@ -34,7 +33,6 @@ export function DropdownMenuAuthorizationActions({
   currentUserId: number;
   currentUserRole: string;
 }) {
-  const [isDeleting, startDeleteTransition] = useTransition();
   const [isPrinting, startPrintTransition] = useTransition();
   const [isReturning, startReturnTransition] = useTransition();
 
@@ -71,22 +69,6 @@ export function DropdownMenuAuthorizationActions({
         toast.success("Devolvido", {
           description: "A devolução foi registada com sucesso.",
         });
-    });
-  };
-
-  const handleDelete = () => {
-    const confirmed = window.confirm(
-      "Tem a certeza que deseja excluir esta autorização?",
-    );
-    if (!confirmed) return;
-
-    startDeleteTransition(async () => {
-      const result = await deleteAuthorization(authorization.id);
-      if (result.success) {
-        toast.success("Autorização deletada com sucesso!");
-      } else {
-        toast.error("Erro ao deletar autorização.");
-      }
     });
   };
 
@@ -160,16 +142,7 @@ export function DropdownMenuAuthorizationActions({
           <>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem
-                variant="destructive"
-                className="cursor-pointer"
-                onClick={handleDelete}
-                disabled={isDeleting}
-                //onSelect={(e) => e.preventDefault()}
-              >
-                <TrashIcon />
-                Deletar
-              </DropdownMenuItem>
+              <DeleteAuthorizationAlertDialog authorization={authorization} />
             </DropdownMenuGroup>
           </>
         )}
