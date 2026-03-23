@@ -15,13 +15,20 @@ export const { auth, signIn, signOut } = NextAuth({
         if (parsedCredentials.success) {
           const { email, password } = parsedCredentials.data;
           const user = await prisma.user.findUnique({ where: { email } });
-          if (!user) return null;
+
+          if (
+            !user ||
+            user.accountStatus === "INACTIVE" ||
+            user.accountStatus === "SUSPENDED"
+          )
+            return null;
+
           const passwordsMatch = await bcrypt.compare(password, user.password);
-          console.log("User found:", user.email);
+          //console.log("User found:", user.email);
           if (passwordsMatch) {
             return {
               ...user,
-              id: String(user.id), // convertido o ID para string, pois o NextAuth espera que seja string
+              id: String(user.id), // Convertido o ID para string, pois o NextAuth espera que seja string
             };
           }
         }
