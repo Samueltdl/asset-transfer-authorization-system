@@ -58,7 +58,7 @@ export function DeleteAuthorizationAlertDialog({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel className="cursor-pointer" variant="outline">
-            Cancel
+            Cancelar
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={handleDelete}
@@ -66,7 +66,7 @@ export function DeleteAuthorizationAlertDialog({
             className="cursor-pointer"
             variant="destructive"
           >
-            Delete
+            Deletar
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
