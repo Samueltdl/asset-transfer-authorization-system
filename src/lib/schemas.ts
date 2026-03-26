@@ -15,6 +15,11 @@ export const authorizationSchema = z.object({
     .string()
     .min(5, "Motivo muito curto")
     .max(100, "Motivo muito longo"),
+  observations: z
+    .string()
+    .max(200, "Observação muito longa")
+    .optional()
+    .or(z.literal("")),
   items: z
     .array(
       z.object({
