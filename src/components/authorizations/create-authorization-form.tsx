@@ -37,6 +37,7 @@ export function CreateAuthorizationForm({
       destination: "",
       responsible: "",
       motive: "",
+      observations: "",
       items: [{ assetNumber: "", itemDescription: "", amount: 1 }],
     },
   });
@@ -124,7 +125,19 @@ export function CreateAuthorizationForm({
               </FormItem>
             )}
           />
-
+          <FormField
+            control={form.control}
+            name="observations"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Observações</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-medium">Itens / Patrimônios</h3>

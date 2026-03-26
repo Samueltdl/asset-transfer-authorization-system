@@ -40,6 +40,7 @@ export function UpdateAuthorizationForm({
       destination: authorization.destination,
       responsible: authorization.responsible,
       motive: authorization.motive,
+      observations: authorization.observations || "",
       items: authorization.items,
     },
   });
@@ -125,7 +126,19 @@ export function UpdateAuthorizationForm({
               </FormItem>
             )}
           />
-
+          <FormField
+            control={form.control}
+            name="observations"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Observações</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-medium">Itens / Patrimônios</h3>
