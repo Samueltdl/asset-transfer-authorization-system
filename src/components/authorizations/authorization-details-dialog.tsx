@@ -93,16 +93,22 @@ export function AuthorizationDetailsDialog({
               </p>
             </div>
             <div className="col-span-2">
-              <p className="text-muted-foreground font-medium">Motivo</p>
-              <p className="bg-white p-2 border rounded-md mt-1">
-                {authorization.motive}
-              </p>
-            </div>
-            <div className="col-span-2">
               <p className="text-muted-foreground font-medium">
                 Registrado por
               </p>
               <p>{authorization.user.name}</p>
+            </div>
+            <div className="col-span-2">
+              <p className="text-muted-foreground font-medium">Motivo</p>
+              <p className="bg-white p-2 border rounded-md mt-1 min-h-9">
+                {authorization.motive}
+              </p>
+            </div>
+            <div className="col-span-2">
+              <p className="text-muted-foreground font-medium">Observações</p>
+              <p className="bg-white p-2 border rounded-md mt-1 min-h-9">
+                {authorization.observations}
+              </p>
             </div>
           </div>
 
