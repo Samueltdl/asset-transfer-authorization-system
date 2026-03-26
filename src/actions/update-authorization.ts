@@ -46,6 +46,7 @@ export async function updateAuthorization(
         destination: validatedValues.destination,
         responsible: validatedValues.responsible,
         motive: validatedValues.motive,
+        observations: validatedValues.observations,
         authorizationStatus: "PENDING", // O status volta a ser pendente, já que a autorização for editada
         items: {
           deleteMany: {}, // Apaga os itens antigos desta autorização

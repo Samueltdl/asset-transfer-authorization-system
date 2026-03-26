@@ -22,6 +22,7 @@ export async function createAuthorization(data: AuthorizationFormValues) {
         destination: validatedValues.destination,
         responsible: validatedValues.responsible,
         motive: validatedValues.motive,
+        observations: validatedValues.observations,
         userId: Number(session.user.id), // Convertendo para number
         items: {
           create: validatedValues.items,
