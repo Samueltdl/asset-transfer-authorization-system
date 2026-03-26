@@ -1,5 +1,5 @@
 "use client";
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,12 +10,18 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { PencilIcon, Eye, CircleChevronDown, PrinterIcon } from "lucide-react";
+import {
+  Eye,
+  CircleChevronDown,
+  PrinterIcon,
+  PencilIcon,
+  Undo2Icon,
+  TrashIcon,
+} from "lucide-react";
 import { AuthorizationWithRelations } from "@/types";
 import { AuthorizationDetailsDialog } from "./authorization-details-dialog";
 import { setApproved } from "@/actions/set-authorization-status";
 import { UpdateAuthorizationForm } from "./update-authorization-form";
-import { Dialog, DialogTrigger } from "../ui/dialog";
 import { DeleteAuthorizationAlertDialog } from "./delete-authorization-alert-dialog";
 import { SetReturnAuthorizationAlertDialog } from "./set-return-authorization-alert-dialog";
 
@@ -29,8 +35,6 @@ export function DropdownMenuAuthorizationActions({
   currentUserRole: string;
 }) {
   const [isPrinting, startPrintTransition] = useTransition();
-
-  const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
 
   const handlePrint = () => {
     startPrintTransition(async () => {
@@ -80,31 +84,28 @@ export function DropdownMenuAuthorizationActions({
             </DropdownMenuItem>
           )}
           {authorization.authorizationStatus === "APPROVED" && (
-            <SetReturnAuthorizationAlertDialog authorization={authorization} />
+            <SetReturnAuthorizationAlertDialog authorization={authorization}>
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onSelect={(e) => e.preventDefault()}
+              >
+                <Undo2Icon />
+                Registrar Devolução
+              </DropdownMenuItem>
+            </SetReturnAuthorizationAlertDialog>
           )}
 
           {(currentUserRole === "ADMIN" ||
             authorization.userId === currentUserId) && (
-            <>
-              <Dialog
-                open={isUpdateDialogOpen}
-                onOpenChange={setIsUpdateDialogOpen}
+            <UpdateAuthorizationForm authorization={authorization}>
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onSelect={(e) => e.preventDefault()}
               >
-                <DialogTrigger asChild>
-                  <DropdownMenuItem
-                    className="cursor-pointer"
-                    onSelect={(e) => e.preventDefault()}
-                  >
-                    <PencilIcon />
-                    Editar
-                  </DropdownMenuItem>
-                </DialogTrigger>
-                <UpdateAuthorizationForm
-                  authorization={authorization}
-                  setOpen={setIsUpdateDialogOpen}
-                />
-              </Dialog>
-            </>
+                <PencilIcon />
+                Editar
+              </DropdownMenuItem>
+            </UpdateAuthorizationForm>
           )}
         </DropdownMenuGroup>
         {(currentUserRole === "ADMIN" ||
@@ -112,7 +113,16 @@ export function DropdownMenuAuthorizationActions({
           <>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DeleteAuthorizationAlertDialog authorization={authorization} />
+              <DeleteAuthorizationAlertDialog authorization={authorization}>
+                <DropdownMenuItem
+                  variant="destructive"
+                  className="cursor-pointer"
+                  onSelect={(e) => e.preventDefault()}
+                >
+                  <TrashIcon />
+                  Deletar
+                </DropdownMenuItem>
+              </DeleteAuthorizationAlertDialog>
             </DropdownMenuGroup>
           </>
         )}

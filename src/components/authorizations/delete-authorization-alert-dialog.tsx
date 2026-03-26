@@ -10,16 +10,17 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Trash2Icon, TrashIcon } from "lucide-react";
-import { DropdownMenuItem } from "../ui/dropdown-menu";
+import { Trash2Icon } from "lucide-react";
 import { deleteAuthorization } from "@/actions/delete-authorization";
-import { useTransition } from "react";
+import { ReactNode, useTransition } from "react";
 import { AuthorizationWithRelations } from "@/types";
 import { toast } from "sonner";
 
 export function DeleteAuthorizationAlertDialog({
+  children,
   authorization,
 }: {
+  children: ReactNode;
   authorization: AuthorizationWithRelations;
 }) {
   const [isDeleting, startDeleteTransition] = useTransition();
@@ -37,15 +38,7 @@ export function DeleteAuthorizationAlertDialog({
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <DropdownMenuItem
-          variant="destructive"
-          className="cursor-pointer"
-          onSelect={(e) => e.preventDefault()}
-        >
-          <TrashIcon /> Deletar
-        </DropdownMenuItem>
-      </AlertDialogTrigger>
+      <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
       <AlertDialogContent size="sm">
         <AlertDialogHeader>
           <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">

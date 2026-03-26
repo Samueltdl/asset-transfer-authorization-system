@@ -11,15 +11,16 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Undo2Icon } from "lucide-react";
-import { DropdownMenuItem } from "../ui/dropdown-menu";
-import { useTransition } from "react";
+import { ReactNode, useTransition } from "react";
 import { AuthorizationWithRelations } from "@/types";
 import { toast } from "sonner";
 import { setReturn } from "@/actions/set-authorization-status";
 
 export function SetReturnAuthorizationAlertDialog({
+  children,
   authorization,
 }: {
+  children: ReactNode;
   authorization: AuthorizationWithRelations;
 }) {
   const [isReturning, startReturnTransition] = useTransition();
@@ -37,15 +38,7 @@ export function SetReturnAuthorizationAlertDialog({
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <DropdownMenuItem
-          className="cursor-pointer"
-          onSelect={(e) => e.preventDefault()}
-        >
-          <Undo2Icon />
-          Registrar Devolução
-        </DropdownMenuItem>
-      </AlertDialogTrigger>
+      <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
       <AlertDialogContent size="sm">
         <AlertDialogHeader>
           <AlertDialogMedia>
