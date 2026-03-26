@@ -1,30 +1,63 @@
 "use server";
+
 import prisma from "@/lib/prisma";
 
-// Adicionar paginação com número de itens por página e número da página
+// ----------------------------- TODO ----------------------------------//
 // Adicionar variável para que o usuário escolha a ordenação (asc ou desc)
-export const getAuthorizations = async () => {
+export const getAuthorizations = async (
+  page: number = 1,
+  limit: number = 20,
+  sortOrder: "asc" | "desc" = "desc",
+) => {
   try {
-    const authorizations = await prisma.authorization.findMany({
-      where: {
-        isDeleted: false,
-      },
-      include: {
-        items: true,
-        user: {
-          select: {
-            name: true,
+    const skip = (page - 1) * limit;
+
+    const [authorizations, totalCount] = await prisma.$transaction([
+      prisma.authorization.findMany({
+        where: {
+          isDeleted: false,
+        },
+        include: {
+          items: true,
+          user: {
+            select: {
+              name: true,
+            },
           },
         },
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
+        orderBy: {
+          createdAt: sortOrder,
+        },
+        skip: skip,
+        take: limit,
+      }),
+      prisma.authorization.count({
+        where: {
+          isDeleted: false,
+        },
+      }),
+    ]);
 
-    return authorizations || [];
+    const totalPages = Math.ceil(totalCount / limit);
+    return {
+      data: authorizations,
+      metadata: {
+        totalCount,
+        totalPages,
+        currentPage: page,
+        limit,
+      },
+    };
   } catch (error) {
     console.error("Erro ao buscar autorizações:", error);
-    return [];
+    return {
+      data: [],
+      metadata: {
+        totalCount: 0,
+        totalPages: 0,
+        currentPage: 1,
+        limit,
+      },
+    };
   }
 };
