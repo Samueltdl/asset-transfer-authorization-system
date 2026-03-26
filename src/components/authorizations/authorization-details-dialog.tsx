@@ -100,14 +100,14 @@ export function AuthorizationDetailsDialog({
             </div>
             <div className="col-span-2">
               <p className="text-muted-foreground font-medium">Motivo</p>
-              <p className="bg-white p-2 border rounded-md mt-1 min-h-9">
+              <p className="bg-white p-2 border rounded-md mt-1 min-h-9 wrap-break-word whitespace-pre-wrap">
                 {authorization.motive}
               </p>
             </div>
             <div className="col-span-2">
               <p className="text-muted-foreground font-medium">Observações</p>
-              <p className="bg-white p-2 border rounded-md mt-1 min-h-9">
-                {authorization.observations}
+              <p className="bg-white p-2 border rounded-md mt-1 min-h-9 wrap-break-word whitespace-pre-wrap">
+                {authorization.observations || "Nenhuma observação registrada."}
               </p>
             </div>
           </div>
