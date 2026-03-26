@@ -1,7 +1,7 @@
 import { getAuthorizations } from "@/actions/get-authorizations";
 import { AuthorizationsTable } from "@/components/authorizations/authorizations-table";
-import { OpenCreateAuthorizationDialogButton } from "@/components/authorizations/open-create-authorization-dialog-button";
 import { auth } from "@/auth";
+import { CreateAuthorizationForm } from "@/components/authorizations/create-authorization-form";
 
 export default async function AuthorizationsPage() {
   const session = await auth();
@@ -12,7 +12,7 @@ export default async function AuthorizationsPage() {
       <div className="space-y-6">
         <div className="flex flex-row justify-between items-center">
           <h1 className="text-3xl font-bold">Autorizações de Saída</h1>
-          <OpenCreateAuthorizationDialogButton />
+          <CreateAuthorizationForm />
         </div>
 
         {authorizations.length === 0 ? (
