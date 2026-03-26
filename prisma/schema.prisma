@@ -49,6 +49,7 @@ model Authorization {
   destination         String
   motive              String
   responsible         String
+  observations        String?
   authorizationStatus AuthorizationStatus @default(PENDING)
   user                User                @relation(fields: [userId], references: [id])
   userId              Int
