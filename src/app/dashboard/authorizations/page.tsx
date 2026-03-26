@@ -3,9 +3,19 @@ import { AuthorizationsTable } from "@/components/authorizations/authorizations-
 import { auth } from "@/auth";
 import { CreateAuthorizationForm } from "@/components/authorizations/create-authorization-form";
 
-export default async function AuthorizationsPage() {
+export default async function AuthorizationsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
   const session = await auth();
-  const authorizations = await getAuthorizations();
+  const resolvedSearchParams = await searchParams;
+  const currentPage = resolvedSearchParams?.page
+    ? Number(resolvedSearchParams.page)
+    : 1;
+  const limit = 15;
+
+  const response = await getAuthorizations(currentPage, limit, "desc");
 
   return (
     <div className="px-6 pb-4">
@@ -15,7 +25,7 @@ export default async function AuthorizationsPage() {
           <CreateAuthorizationForm />
         </div>
 
-        {authorizations.length === 0 ? (
+        {response.data.length === 0 ? (
           <div className="p-10 text-center border rounded-lg bg-white">
             <p className="text-muted-foreground">
               Nenhuma autorização encontrada.
@@ -23,7 +33,8 @@ export default async function AuthorizationsPage() {
           </div>
         ) : (
           <AuthorizationsTable
-            data={authorizations}
+            data={response.data}
+            metadata={response.metadata}
             currentUserId={Number(session?.user?.id)}
             currentUserRole={session?.user?.role as string}
           />
