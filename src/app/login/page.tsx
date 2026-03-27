@@ -1,5 +1,7 @@
 import { LoginForm } from "@/components/login-form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Suspense } from "react";
+export const dynamic = "force-dynamic";
 
 export default function LoginPage() {
   return (
@@ -11,7 +13,9 @@ export default function LoginPage() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <LoginForm />
+          <Suspense>
+            <LoginForm />
+          </Suspense>
         </CardContent>
       </Card>
     </main>
