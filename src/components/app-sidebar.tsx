@@ -20,7 +20,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { logout } from "@/lib/actions";
+import { logout } from "@/actions/authenticate";
 
 const menuItems = [
   {

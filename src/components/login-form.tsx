@@ -14,7 +14,7 @@ import {
 import { toast } from "sonner";
 
 import { useActionState, useEffect } from "react";
-import { authenticate } from "@/lib/actions";
+import { authenticate } from "@/actions/authenticate";
 import { useSearchParams } from "next/navigation";
 
 export function LoginForm() {
