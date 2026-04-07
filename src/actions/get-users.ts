@@ -10,6 +10,9 @@ export const getUsers = async () => {
     const users = await prisma.user.findMany({
       include: {
         authorizations: {
+          where: {
+            isDeleted: false,
+          },
           select: {
             id: true, // Apenas para mostrar o número de autorizações, não precisa de mais detalhes aqui
           },
