@@ -1,5 +1,7 @@
 import { SummaryCards } from "@/components/dashboard/summary-cards";
 
+export const dynamic = "force-dynamic";
+
 export default function DashboardPage() {
   return (
     <div className="flex flex-col space-y-6 px-6 pb-4">
