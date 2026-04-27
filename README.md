@@ -1,36 +1,106 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📦 Sistema de Autorização de Saída de Patrimônio
 
-## Getting Started
+Uma aplicação web full-stack desenvolvida com o intuito de modernizar, digitalizar e automatizar o controle de movimentação de ativos físicos.
 
-First, run the development server:
+O sistema substitui o controle manual, tradicionalmente feito através de planilhas eletrônicas (Excel), oferecendo um fluxo de aprovação seguro, registro detalhado de itens por número de patrimônio e geração de termos de responsabilidade para impressão.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ Funcionalidades
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Autenticação e Autorização:** Controle de acesso seguro com níveis de permissão (_ADMIN_ e _USER_).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Gestão de Autorizações:** Criação de solicitações de saída contendo origem, destino, responsável pela retirada, motivo, observações e a lista de itens com seus respectivos números de patrimônio.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Fluxo de Status:** Acompanhamento do ciclo de vida da autorização (PENDENTE, APROVADA e DEVOLVIDA).
 
-## Learn More
+- **Impressão de Termos:** Geração de documento para impressão do termo de responsabilidade no momento da aprovação.
 
-To learn more about Next.js, take a look at the following resources:
+- **Gestão de Usuários:** Interface administrativa para cadastro, edição e inativação de contas do sistema.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Tabelas Inteligentes:** Listagem de dados com paginação otimizada direto no banco de dados.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🛠️ Tecnologias Utilizadas
 
-## Deploy on Vercel
+### O projeto foi construído utilizando as seguintes tecnologias e ferramentas:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Frontend:** Next.js (App Router), React, TypeScript, Tailwind CSS.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Componentes e UI:** shadcn/ui, Lucide Icons.
+
+- **Formulários e Validação:** React Hook Form e Zod.
+
+- **Backend:** Next.js Server Actions e Route Handlers.
+
+- **Banco de Dados:** PostgreSQL 15.
+
+- **ORM:** Prisma (v7).
+
+- **Infraestrutura:** Docker e Docker Compose.
+
+## 🚀 Como Executar o Projeto Localmente
+
+### Pré-requisitos:
+
+- Certifique-se de ter o Node.js (versão 20+) e o PostgreSQL instalados na sua máquina.
+
+### Passos para Instalação
+
+- **Clone o repositório:**
+
+  ```
+  git clone https://github.com/Samueltdl/asset-transfer-authorization-system.git
+
+  cd asset-transfer-authorization-system
+  ```
+
+- **Instale as dependências:**
+
+  ```
+  npm install
+  ```
+
+- **Configure as Variáveis de Ambiente:**
+
+  Renomeie o arquivo `.env.example` para `.env` na raiz do projeto e configure as credenciais do banco e a chave de autenticação (pode ser gerada uma aleatória em: https://generate-secret.vercel.app/32).
+
+  ```
+  DATABASE_URL="Sua url de conexão com o banco de dados"
+  AUTH_SECRET="Sua chave secreta do Auth.js"
+  ```
+
+- **Suba o schema no seu banco de dados:**
+
+  ```
+  npx prisma db push
+  ```
+
+- **Gere o Prisma Client:**
+
+  ```
+  npx prisma generate
+  ```
+
+- **Rode a seed de criação do usuário administrador inicial:**
+
+  ```
+  npx prisma db seed
+  ```
+
+  **OBS:** As credenciais do usuário gerado na seed são:
+  - e-mail: admin@admin.com.br
+  - senha: admin
+
+- **Inicie o Servidor de Desenvolvimento:**
+
+  ```
+  npm run dev
+  ```
+
+### - Acesse a aplicação em http://localhost:3000.
+
+##
+
+### 🤝 Autor
+
+Desenvolvido por Samuel Trindade de Lemos
+
+Bacharel em Sistemas de Informação pela FURG
