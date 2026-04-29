@@ -1,7 +1,7 @@
 import { getUsers } from "@/actions/get-users";
 import { UsersTable } from "@/components/users/users-table";
-import { OpenCreateUserDialogButton } from "@/components/users/open-create-user-dialog-button";
 import { auth } from "@/auth";
+import { CreateUserForm } from "@/components/users/create-user-form";
 
 export default async function UsersManagementPage() {
   const session = await auth();
@@ -13,7 +13,7 @@ export default async function UsersManagementPage() {
       <div className="space-y-6">
         <div className="flex flex-row justify-between items-center">
           <h1 className="text-3xl font-bold">Painel de Gestão de Usuários</h1>
-          {isAdmin && <OpenCreateUserDialogButton isAdmin={isAdmin} />}
+          {isAdmin && <CreateUserForm />}
         </div>
 
         {users.length === 0 ? (
