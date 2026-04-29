@@ -20,7 +20,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { logout } from "@/actions/authenticate";
+import { LogoutDialog } from "./logout-dialog";
 
 const menuItems = [
   {
@@ -72,12 +72,14 @@ export function AppSidebar() {
 
       <SidebarFooter className="border-t p-4">
         <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton className="cursor-pointer" onClick={logout}>
-              <LogOut />
-              <span>Sair do Sistema</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
+          <LogoutDialog>
+            <SidebarMenuItem>
+              <SidebarMenuButton className="cursor-pointer">
+                <LogOut />
+                <span>Sair do Sistema</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </LogoutDialog>
         </SidebarMenu>
       </SidebarFooter>
     </Sidebar>
