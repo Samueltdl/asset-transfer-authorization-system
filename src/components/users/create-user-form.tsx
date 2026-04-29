@@ -146,10 +146,10 @@ export function CreateUserForm({
 
           <Button
             type="submit"
-            className="cursor-pointer w-full"
+            className="cursor-pointer w-full bg-blue-500 hover:bg-blue-600 text-white"
             disabled={isPending}
           >
-            {isPending ? "Salvando..." : "Cadastrar Usuário"}
+            {isPending ? "Salvando..." : "Salvar Usuário"}
           </Button>
         </form>
       </Form>
