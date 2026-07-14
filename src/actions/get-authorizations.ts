@@ -1,6 +1,7 @@
 "use server";
 
 import prisma from "@/lib/prisma";
+import { formatInTimeZone } from "date-fns-tz";
 
 // ----------------------------- TODO ----------------------------------//
 // Adicionar variável para que o usuário escolha a ordenação (asc ou desc)
@@ -39,8 +40,24 @@ export const getAuthorizations = async (
     ]);
 
     const totalPages = Math.ceil(totalCount / limit);
+
+    // Formata as datas de criação e atualização para o padrão brasileiro
+    const authorizationsWithDateFormatted = authorizations.map((auth) => ({
+      ...auth,
+      createdAt: formatInTimeZone(
+        auth.createdAt,
+        "America/Sao_Paulo",
+        "dd/MM/yyyy HH:mm:ss",
+      ),
+      updatedAt: formatInTimeZone(
+        auth.updatedAt,
+        "America/Sao_Paulo",
+        "dd/MM/yyyy HH:mm:ss",
+      ),
+    }));
+
     return {
-      data: authorizations,
+      data: authorizationsWithDateFormatted,
       metadata: {
         totalCount,
         totalPages,

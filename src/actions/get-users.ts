@@ -1,5 +1,6 @@
 "use server";
 import prisma from "@/lib/prisma";
+import { formatInTimeZone } from "date-fns-tz";
 
 // -------------------------- TODO -------------------------- //
 // Adicionar paginação com número de itens por página e número da página
@@ -23,7 +24,25 @@ export const getUsers = async () => {
       },
     });
 
-    return users || [];
+    if (!users) {
+      return [];
+    }
+
+    const usersWithDateFormatted = users.map((user) => ({
+      ...user,
+      createdAt: formatInTimeZone(
+        user.createdAt,
+        "America/Sao_Paulo",
+        "dd/MM/yyyy HH:mm:ss",
+      ),
+      updatedAt: formatInTimeZone(
+        user.updatedAt,
+        "America/Sao_Paulo",
+        "dd/MM/yyyy HH:mm:ss",
+      ),
+    }));
+
+    return usersWithDateFormatted;
   } catch (error) {
     console.error("Erro ao buscar usuários:", error);
     return [];
